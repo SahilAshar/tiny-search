@@ -15,8 +15,8 @@ requirements-dev.txt: requirements-dev.in requirements.in
 	uv pip compile requirements-dev.in -o requirements-dev.txt
 
 lint:
-	uv run ruff check src/ index/ tests/
-	uv run ruff format --check src/ index/ tests/
+	uv run ruff check --fix src/ index/ tests/
+	uv run ruff format src/ index/ tests/
 	uv run mypy src/ index/
 
 test:

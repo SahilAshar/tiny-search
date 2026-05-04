@@ -17,4 +17,8 @@ class TokenizerClient:
 
     def tokenize(self, text: str) -> list[str]:
         tokens = word_tokenize(text.lower())
-        return [self._stemmer.stem(t) for t in tokens if t.isalnum() and t not in self._stop_words]
+        return [
+            self._stemmer.stem(t)
+            for t in tokens
+            if t.isalnum() and t not in self._stop_words
+        ]

@@ -10,7 +10,8 @@ index_client = IndexClient()
 
 @app.get("/search", response_model=SearchResponse)
 async def search(request: SearchRequest = Depends()) -> SearchResponse:
-    return SearchResponse(results=[])
+    results = index_client.search(request.query, request.limit)
+    return SearchResponse(results=results)
 
 
 @app.post("/ingest", response_model=IngestResponse, status_code=200)

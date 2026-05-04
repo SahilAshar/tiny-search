@@ -4,6 +4,7 @@ from uuid import UUID, uuid5, NAMESPACE_URL
 
 from index.tokenizer import TokenizerClient
 from index.types import InvertedIndex
+from utils.file_utils import validate_file_path
 
 
 class IndexClient:
@@ -23,6 +24,8 @@ class IndexClient:
         return self._index
 
     def ingest(self, path: Path) -> UUID:
+        validate_file_path(path)
+
         doc_id = uuid5(NAMESPACE_URL, str(path))
         content = path.read_text(encoding="utf-8")
 

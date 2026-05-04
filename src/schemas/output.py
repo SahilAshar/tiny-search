@@ -14,3 +14,7 @@ class Document(BaseModel):
 
 class SearchResponse(BaseModel):
     results: list[Document]
+
+
+class IngestResponse(BaseModel):
+    id: UUID

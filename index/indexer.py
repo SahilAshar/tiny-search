@@ -2,7 +2,6 @@ from collections import Counter
 from pathlib import Path
 from uuid import UUID, uuid5, NAMESPACE_URL
 
-from index.scoring import ScoringClient
 from index.tokenizer import TokenizerClient
 from index.types import DocumentStore, InvertedIndex
 from src.schemas.output import Document
@@ -18,16 +17,20 @@ class IndexClient:
             cls._instance._index = {}
             cls._instance._doc_store = {}
             cls._instance._tokenizer = TokenizerClient()
-            cls._instance._scorer = ScoringClient()
         return cls._instance
 
     _index: InvertedIndex
     _doc_store: DocumentStore
     _tokenizer: TokenizerClient
-    _scorer: ScoringClient
 
     def get_index(self) -> InvertedIndex:
         return self._index
+
+    def get_doc_store(self) -> DocumentStore:
+        return self._doc_store
+
+    def get_tokenizer(self) -> TokenizerClient:
+        return self._tokenizer
 
     def ingest(self, path: Path) -> UUID:
         validate_file_path(path)
@@ -52,8 +55,3 @@ class IndexClient:
             self._index[token].append((doc_id, count))
 
         return doc_id
-
-    def search(self, query: str, limit: int) -> list[Document]:
-        query_tokens = self._tokenizer.tokenize(query)
-        doc_ids: list[UUID] = self._scorer.score(query_tokens, limit, self._index)
-        return [self._doc_store[doc_id] for doc_id in doc_ids]

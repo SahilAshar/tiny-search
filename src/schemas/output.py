@@ -12,8 +12,13 @@ class Document(BaseModel):
     file_type: str
 
 
+class ScoredDocument(BaseModel):
+    document: Document
+    score: float
+
+
 class SearchResponse(BaseModel):
-    results: list[Document]
+    results: list[ScoredDocument]
 
 
 class IngestResponse(BaseModel):

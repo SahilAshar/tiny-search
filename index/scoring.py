@@ -21,7 +21,7 @@ class ScoringClient:
         query_tokens: list[str],
         limit: int,
         index_client: IndexClient,
-    ) -> list[UUID]:
+    ) -> list[tuple[UUID, float]]:
         index = index_client.get_index()
         doc_store = index_client.get_doc_store()
 
@@ -46,5 +46,5 @@ class ScoringClient:
 
                 doc_scores[doc_id] = doc_scores.get(doc_id, 0.0) + score
 
-        sorted_docs = sorted(doc_scores, key=lambda d: doc_scores[d], reverse=True)
+        sorted_docs = sorted(doc_scores.items(), key=lambda d: d[1], reverse=True)
         return sorted_docs[:limit]
